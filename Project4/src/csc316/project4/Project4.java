@@ -64,7 +64,7 @@ public class Project4 {
         System.out.println("don't is " + hashTable.get(useHashFunction("don't")).toString());
         System.out.println("Contents of space 25 is" + hashTable.get(25).toString());
         
-        
+        spellChecker();
 //        System.out.println("Cleaned: " + removePunctuation("Boy! howdy?_taco don't mang, it ain't"));
         
         console.close();
@@ -141,9 +141,12 @@ public class Project4 {
                 checkLine = removePunctuation(checkLine);
                 Scanner lineScanner = new Scanner(checkLine);
                 while(lineScanner.hasNext()) {
-                    String word = lineScanner.next();
+                    String wordStore = lineScanner.next();
+                    String word = wordStore;
                     int currentProbes = lookUpWord(word);
                     
+                    
+                    String wordCopy = word;
                     //First Rule
                     if(currentProbes <= 0 && Character.isUpperCase(word.charAt(0))) {
                         word = Character.toLowerCase(word.charAt(0)) + word.substring(1);
@@ -152,13 +155,59 @@ public class Project4 {
                     //Second Rule
                     if(currentProbes <= 0 && word.substring(word.length() - 2).equals("'s")) {
                         word = word.substring(0, word.length() - 2);
+                        currentProbes = lookUpWord(word);
+                    }
+                    //Third Rule
+                    //Targeted es first because that way it can actually be encountered if it ends in es. Otherwise the first part of the 
+                    //comparison would have already removed the ending s of a word making any word that actually ends in es end in just e. 
+                    if(currentProbes <= 0 && word.substring(word.length() - 2).equals("es")) {
+                        word = word.substring(0, (word.length() - 2));
+                        currentProbes = lookUpWord(word);
+                    } else if (currentProbes <= 0 &&  word.substring(word.length() - 1).equals("s")) {
+                        word = word.substring(0, (word.length() - 1));
+                        currentProbes = lookUpWord(word);
                     }
                     
-
+                    //Fourth Rule
+                    wordCopy = word;
+                    if(currentProbes <= 0 && currentProbes <= 0 && word.substring(word.length() - 2).equals("ed")) {
+                        word = word.substring(0, (word.length() - 2));
+                        currentProbes = lookUpWord(word);
+                        if(currentProbes <= 0 && wordCopy.substring(wordCopy.length() - 1).equals("d")) {
+                            word = wordCopy.substring(0, wordCopy.length() - 1);
+                            currentProbes = lookUpWord(word);
+                        }
+                    }
                     
+                    //Fifth Rule
+                    wordCopy = word;
+                    if(currentProbes <= 0 && currentProbes <= 0 && word.substring(word.length() - 2).equals("er")) {
+                        word = word.substring(0, (word.length() - 2));
+                        currentProbes = lookUpWord(word);
+                        if(currentProbes <= 0 && wordCopy.substring(wordCopy.length() - 1).equals("r")) {
+                            word = wordCopy.substring(0, wordCopy.length() - 1);
+                            currentProbes = lookUpWord(word);
+                        }
+                    }
                     
+                    //Sixth Rule
+                    wordCopy = word;
+                    if(currentProbes <= 0 && currentProbes <= 0 && word.substring(word.length() - 3).equals("ing")) {
+                        word = word.substring(0, (word.length() - 3));
+                        currentProbes = lookUpWord(word);
+                        if(currentProbes <= 0 && wordCopy.substring(wordCopy.length() - 3).equals("ing")) {
+                            word = wordCopy.substring(0, wordCopy.length() - 3) + "e";
+                            currentProbes = lookUpWord(word);
+                        }
+                    }
                     
+                    //Seventh Rule
+                    if(currentProbes <= 0 && currentProbes <= 0 && word.substring(word.length() - 2).equals("ly")) {
+                        word = word.substring(0, (word.length() - 2));
+                        currentProbes = lookUpWord(word);
+                    }
                     numLookUps++;
+                    System.out.println("Misspelled Word: " + wordStore);
                 }
                 //it should count the number of probes in the hash
                 //table. For the purposes of counting, a probe occurs whenever a text word is compared to a word
@@ -188,13 +237,14 @@ public class Project4 {
         if(listToProbe.isEmpty()) {
             return 0;
         } else if(listToProbe.indexOf(word) == -1){
-            
+                numLookUps++;
                 probes = (listToProbe.size() + 1);
                 //Looked through entire list and compared against all elements but didn't find
                 return (probes * -1);
             
         } else {
             //Since at least one comparison has to be made.
+            numLookUps++;
             probes = (listToProbe.indexOf(word) + 1);
             return probes;
         
