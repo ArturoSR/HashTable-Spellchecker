@@ -132,7 +132,7 @@ public class Project4 {
     public static void spellChecker() {
         try {
             Scanner checkFile = new Scanner(new FileInputStream(filename));
-            PrintStream output = new PrintStream(new File(outfile));
+            //PrintStream output = new PrintStream(new File(outfile));
             wordsInFile = 0;
             numLookUps = 0;
             int numProbes = 0;
@@ -152,20 +152,22 @@ public class Project4 {
                         word = Character.toLowerCase(word.charAt(0)) + word.substring(1);
                         currentProbes = lookUpWord(word);
                     }
+                    
                     //Second Rule
                     if(currentProbes <= 0 && word.substring(word.length() - 2).equals("'s")) {
                         word = word.substring(0, word.length() - 2);
                         currentProbes = lookUpWord(word);
                     }
-                    //Third Rule
-                    //Targeted es first because that way it can actually be encountered if it ends in es. Otherwise the first part of the 
-                    //comparison would have already removed the ending s of a word making any word that actually ends in es end in just e. 
-                    if(currentProbes <= 0 && word.substring(word.length() - 2).equals("es")) {
-                        word = word.substring(0, (word.length() - 2));
-                        currentProbes = lookUpWord(word);
-                    } else if (currentProbes <= 0 &&  word.substring(word.length() - 1).equals("s")) {
+                    
+                    //Third Rule 
+                    wordCopy = word;
+                    if(currentProbes <= 0 && currentProbes <= 0 && word.substring(word.length() - 1).equals("s")) {
                         word = word.substring(0, (word.length() - 1));
                         currentProbes = lookUpWord(word);
+                        if(currentProbes <= 0 && wordCopy.substring(wordCopy.length() - 2).equals("es")) {
+                            word = wordCopy.substring(0, wordCopy.length() - 2);
+                            currentProbes = lookUpWord(word);
+                        }
                     }
                     
                     //Fourth Rule
@@ -207,7 +209,9 @@ public class Project4 {
                         currentProbes = lookUpWord(word);
                     }
                     numLookUps++;
-                    System.out.println("Misspelled Word: " + wordStore);
+                    if(currentProbes <= 0 ) {
+                        System.out.println("Misspelled Word: " + wordStore);
+                    }
                 }
                 //it should count the number of probes in the hash
                 //table. For the purposes of counting, a probe occurs whenever a text word is compared to a word
