@@ -47,12 +47,12 @@ public class Project4 {
         System.out.println("What is the name of the file containing the dictionary?");
         dictionaryFile = console.nextLine();
         dictionaryFile = dictionaryFile.trim();
-        System.out.println("What is the name of the file to print to?");
-        outfile = console.nextLine();
-        outfile = outfile.trim();
+//        System.out.println("What is the name of the file to print to?");
+//        outfile = console.nextLine();
+//        outfile = outfile.trim();
         
         buildHashTable();
-        System.out.println("HashCode Check: " + useHashFunction("ABC"));
+//        System.out.println("HashCode Check: " + useHashFunction("ABC"));
         
         
         console.close();
@@ -77,7 +77,7 @@ public class Project4 {
             while(dictionaryScan.hasNext()) {
                 String currentWord = dictionaryScan.next();
                 int hash = useHashFunction(currentWord);
-                totalCharsLength =+ currentWord.length();
+                totalCharsLength += currentWord.length();
                 
                 //Use get to retrieve the linkedList at a position and store to temp
                 //Append new word to temp list and then use set to reinsert the temp list to the spot
@@ -95,11 +95,15 @@ public class Project4 {
         //Since each ascii character is typically 7 bits long
         int radix = 128;
         int wordVal = 0;
-        for(int i = 0, j = (word.length() - 1); i < word.length(); i++) {
+        for(int i = 0, j = (word.length() - 1); i < word.length(); i++, j--) {
             int charVal = (int) word.charAt(i);
-            wordVal =(int) (+ charVal * Math.pow(radix, j));
+//            System.out.println("current value of character is " + charVal);
+//            System.out.println("current value of exponent is " + j);
+            wordVal += (int) (charVal * Math.pow(radix, j));
         }
         
+//        System.out.println("Uncompressed word Value: " + wordVal);
+//        System.out.println("Expected: " + (1073475 % 30181));
         return (wordVal % sizeCapM);
     }
     
