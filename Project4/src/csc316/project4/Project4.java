@@ -37,6 +37,10 @@ public class Project4 {
     
     private static int numLookUps;
     
+    private static int misspelled;
+    
+    private static int totalProbes;
+    
     
     /**
      * Method that is used to make the program run. 
@@ -68,6 +72,7 @@ public class Project4 {
         
         System.out.println("Number of words in file to be checked: " + wordsInFile);
         System.out.println("Total Lookups: " + numLookUps);
+        System.out.println("Total Misspelled: " + misspelled);
         
         console.close();
     }
@@ -134,22 +139,28 @@ public class Project4 {
             //PrintStream output = new PrintStream(new File(outfile));
             wordsInFile = 0;
             numLookUps = 0;
-            int numProbes = 0;
+            int probesPerWord = 0;
             while(checkFile.hasNextLine()) {
                 String checkLine = checkFile.nextLine();
                 checkLine = removePunctuation(checkLine);
                 Scanner lineScanner = new Scanner(checkLine);
                 while(lineScanner.hasNext()) {
+                    wordsInFile++;
                     String wordStore = lineScanner.next();
                     String word = wordStore;
                     int currentProbes = lookUpWord(word);
-                    
+                    probesPerWord = currentProbes;
                     
                     String wordCopy = word;
                     //First Rule
                     if(currentProbes <= 0 && Character.isUpperCase(word.charAt(0))) {
                         word = Character.toLowerCase(word.charAt(0)) + word.substring(1);
                         currentProbes = lookUpWord(word);
+                        if (currentProbes < 0) {
+                            probesPerWord += (currentProbes * -1);
+                        } else {
+                            probesPerWord += currentProbes;
+                        }
                     }
                     
                     //Second Rule
@@ -209,16 +220,13 @@ public class Project4 {
                     }
                     
                     if(currentProbes <= 0 ) {
+                        misspelled++;
                         System.out.println("Misspelled Word: " + wordStore);
                     }
                 }
                 //it should count the number of probes in the hash
                 //table. For the purposes of counting, a probe occurs whenever a text word is compared to a word
                 //in the table. A probe does not occur when a text word is compared to an empty table entry.
-                
-                //This should hold the conditions of rechecking as well
-                //lookups++ in every if else of rechecking word
-                
                 
             }
         } catch (FileNotFoundException e) {
@@ -240,14 +248,15 @@ public class Project4 {
         if(listToProbe.isEmpty()) {
             return 0;
         } else if(listToProbe.indexOf(word) == -1){
-                numLookUps++;
-                probes = (listToProbe.size() + 1);
-                //Looked through entire list and compared against all elements but didn't find
-                return (probes * -1);
+            numLookUps++;
+            probes = (listToProbe.size());
+            //Looked through entire list and compared against all elements but didn't find
+            return (probes * -1);
             
         } else {
             //Since at least one comparison has to be made.
             numLookUps++;
+            //plus one since index starts at 0. 
             probes = (listToProbe.indexOf(word) + 1);
             return probes;
         
