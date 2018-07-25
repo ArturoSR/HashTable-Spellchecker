@@ -3,10 +3,14 @@
  */
 package csc316.project4;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.Scanner;
 
 /**
- * This program 
+ * This program uses a hashtable to implement a spell-checker. 
  * 
  * @author Arturo Salinas
  */
@@ -18,6 +22,14 @@ public class Project4 {
     private static String filename = "";
     /** Name of the file to write to*/
     private static String outfile = "";
+    /**Hash table that stores words of dictionary*/
+    private static ArrayList<LinkedList<String>> hashTable;
+    
+    private static int dictionaryWords;
+    /**Found by multiplying number of dictionary characters by 0.2, adding that to number of dictionary characters and then finding the 
+     * the closest prime number. 
+     */
+    private static final int sizeCapM = 30181; 
     
     
     /**
@@ -28,14 +40,40 @@ public class Project4 {
     public static void main (String[] args) {
         Scanner console = new Scanner(System.in);
 
-        System.out.println("What is the name of the file?");
+        System.out.println("What is the name of the file to spellcheck?");
         filename = console.nextLine();
         filename = filename.trim();
+        System.out.println("What is the name of the file containing the dictionary?");
+        dictionaryFile = console.nextLine();
+        dictionaryFile = dictionaryFile.trim();
         System.out.println("What is the name of the file to print to?");
         outfile = console.nextLine();
         outfile = outfile.trim();
+        
+        buildHashTable();
+        
+        console.close();
     }
     
     
+    public static void buildHashTable() {
+        try {
+            Scanner dictionaryScan = new Scanner(new FileInputStream(dictionaryFile));
+            dictionaryWords = 0;
+            hashTable = new ArrayList<LinkedList<String>>(sizeCapM);
+            
+            while(dictionaryScan.hasNext()) {
+                
+                dictionaryWords++;
+            }
+            
+        } catch (FileNotFoundException e) {
+            System.out.println("The dictionary file was not found.");
+        }
+        
+    }
     
 }
+
+
+
