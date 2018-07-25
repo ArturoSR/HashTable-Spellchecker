@@ -70,9 +70,14 @@ public class Project4 {
         
         spellChecker();
         
+        System.out.println("Number of Words in Dictionary: " + dictionaryWords);
         System.out.println("Number of words in file to be checked: " + wordsInFile);
         System.out.println("Total Lookups: " + numLookUps);
         System.out.println("Total Misspelled: " + misspelled);
+        System.out.println("Total Probes: " + totalProbes);
+        System.out.println("Probes Average: " + (double) (totalProbes / wordsInFile));
+        System.out.println("Probes Average: " + (double) (totalProbes / wordsInFile));
+        System.out.println("Probes per Lookup: " + (double) (totalProbes / numLookUps));
         
         console.close();
     }
@@ -98,7 +103,6 @@ public class Project4 {
                 hashTable.get(hash).add(currentWord);
                 dictionaryWords++;
             }
-            System.out.println("Number of Words in Dictionary: " + dictionaryWords);
         } catch (FileNotFoundException e) {
             System.out.println("The dictionary file was not found.");
         }
@@ -167,6 +171,11 @@ public class Project4 {
                     if(currentProbes <= 0 && word.length() > 2 && word.substring(word.length() - 2).equals("'s")) {
                         word = word.substring(0, word.length() - 2);
                         currentProbes = lookUpWord(word);
+                        if (currentProbes < 0) {
+                            probesPerWord += (currentProbes * -1);
+                        } else {
+                            probesPerWord += currentProbes;
+                        }
                     }
                     
                     //Third Rule 
@@ -174,9 +183,20 @@ public class Project4 {
                     if(currentProbes <= 0 && word.length() > 1 && word.substring(word.length() - 1).equals("s")) {
                         word = word.substring(0, (word.length() - 1));
                         currentProbes = lookUpWord(word);
+                        if (currentProbes < 0) {
+                            probesPerWord += (currentProbes * -1);
+                        } else {
+                            probesPerWord += currentProbes;
+                        }
+                        
                         if(currentProbes <= 0 && wordCopy.length() > 2 && wordCopy.substring(wordCopy.length() - 2).equals("es")) {
                             word = wordCopy.substring(0, wordCopy.length() - 2);
                             currentProbes = lookUpWord(word);
+                            if (currentProbes < 0) {
+                                probesPerWord += (currentProbes * -1);
+                            } else {
+                                probesPerWord += currentProbes;
+                            }
                         }
                     }
                     
@@ -185,9 +205,20 @@ public class Project4 {
                     if(currentProbes <= 0 && word.length() > 2 && word.substring(word.length() - 2).equals("ed")) {
                         word = word.substring(0, (word.length() - 2));
                         currentProbes = lookUpWord(word);
+                        if (currentProbes < 0) {
+                            probesPerWord += (currentProbes * -1);
+                        } else {
+                            probesPerWord += currentProbes;
+                        }
+                        
                         if(currentProbes <= 0 && wordCopy.length() > 1 && wordCopy.substring(wordCopy.length() - 1).equals("d")) {
                             word = wordCopy.substring(0, wordCopy.length() - 1);
                             currentProbes = lookUpWord(word);
+                            if (currentProbes < 0) {
+                                probesPerWord += (currentProbes * -1);
+                            } else {
+                                probesPerWord += currentProbes;
+                            }
                         }
                     }
                     
@@ -196,9 +227,20 @@ public class Project4 {
                     if(currentProbes <= 0 && word.length() > 2 && word.substring(word.length() - 2).equals("er")) {
                         word = word.substring(0, (word.length() - 2));
                         currentProbes = lookUpWord(word);
+                        if (currentProbes < 0) {
+                            probesPerWord += (currentProbes * -1);
+                        } else {
+                            probesPerWord += currentProbes;
+                        }
+                        
                         if(currentProbes <= 0 && wordCopy.length() > 1 && wordCopy.substring(wordCopy.length() - 1).equals("r")) {
                             word = wordCopy.substring(0, wordCopy.length() - 1);
                             currentProbes = lookUpWord(word);
+                            if (currentProbes < 0) {
+                                probesPerWord += (currentProbes * -1);
+                            } else {
+                                probesPerWord += currentProbes;
+                            }
                         }
                     }
                     
@@ -207,9 +249,20 @@ public class Project4 {
                     if(currentProbes <= 0 && word.length() > 3 && word.substring(word.length() - 3).equals("ing")) {
                         word = word.substring(0, (word.length() - 3));
                         currentProbes = lookUpWord(word);
+                        if (currentProbes < 0) {
+                            probesPerWord += (currentProbes * -1);
+                        } else {
+                            probesPerWord += currentProbes;
+                        }
+                        
                         if(currentProbes <= 0 && wordCopy.length() > 3  && wordCopy.substring(wordCopy.length() - 3).equals("ing")) {
                             word = wordCopy.substring(0, wordCopy.length() - 3) + "e";
                             currentProbes = lookUpWord(word);
+                            if (currentProbes < 0) {
+                                probesPerWord += (currentProbes * -1);
+                            } else {
+                                probesPerWord += currentProbes;
+                            }
                         }
                     }
                     
@@ -217,12 +270,18 @@ public class Project4 {
                     if(currentProbes <= 0 && word.length() > 2 && word.substring(word.length() - 2).equals("ly")) {
                         word = word.substring(0, (word.length() - 2));
                         currentProbes = lookUpWord(word);
+                        if (currentProbes < 0) {
+                            probesPerWord += (currentProbes * -1);
+                        } else {
+                            probesPerWord += currentProbes;
+                        }
                     }
                     
                     if(currentProbes <= 0 ) {
                         misspelled++;
                         System.out.println("Misspelled Word: " + wordStore);
                     }
+                    totalProbes += probesPerWord;
                 }
                 //it should count the number of probes in the hash
                 //table. For the purposes of counting, a probe occurs whenever a text word is compared to a word
