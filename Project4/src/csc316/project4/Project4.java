@@ -46,12 +46,12 @@ public class Project4 {
     public static void main (String[] args) {
         Scanner console = new Scanner(System.in);
 
-        System.out.println("What is the name of the file to spellcheck?");
-        filename = console.nextLine();
-        filename = filename.trim();
         System.out.println("What is the name of the file containing the dictionary?");
         dictionaryFile = console.nextLine();
         dictionaryFile = dictionaryFile.trim();
+        System.out.println("What is the name of the file to spellcheck?");
+        filename = console.nextLine();
+        filename = filename.trim();
 //        System.out.println("What is the name of the file to print to?");
 //        outfile = console.nextLine();
 //        outfile = outfile.trim();
@@ -65,7 +65,6 @@ public class Project4 {
         System.out.println("Contents of space 25 is" + hashTable.get(25).toString());
         
         spellChecker();
-//        System.out.println("Cleaned: " + removePunctuation("Boy! howdy?_taco don't mang, it ain't"));
         
         console.close();
     }
@@ -81,7 +80,6 @@ public class Project4 {
             hashTable = new ArrayList<LinkedList<String>>(sizeCapM);
             for (int i = 0; i < sizeCapM; i++){
                 LinkedList<String> listInit = new LinkedList<String>();
-                
                 hashTable.add(listInit);
             }
             
@@ -89,11 +87,7 @@ public class Project4 {
             while(dictionaryScan.hasNext()) {
                 String currentWord = dictionaryScan.next();
                 int hash = useHashFunction(currentWord);
-//                LinkedList hashingList = hashTable.get(hash);
                 hashTable.get(hash).add(currentWord);
-                            
-                //Use get to retrieve the linkedList at a position and store to temp
-                //Append new word to temp list and then use set to reinsert the temp list to the spot
                 dictionaryWords++;
             }
             System.out.println("Number of Words in Dictionary: " + dictionaryWords);
@@ -124,11 +118,13 @@ public class Project4 {
 //        System.out.println("Uncompressed word Value: " + wordVal);
 //        System.out.println("Expected: " + (1073475 % 30181));
         
-        //Absolute value to avoid negative compressed hashvalues
+        //Absolute value to avoid negative compressed hash values
         return Math.abs((wordVal % sizeCapM));
     }
     
-    
+    /**
+     * Method that checks to see if words are spelled correctly. 
+     */
     public static void spellChecker() {
         try {
             Scanner checkFile = new Scanner(new FileInputStream(filename));
@@ -154,14 +150,14 @@ public class Project4 {
                     }
                     
                     //Second Rule
-                    if(currentProbes <= 0 && word.substring(word.length() - 2).equals("'s")) {
+                    if(currentProbes <= 0 && word.length() > 2 && word.substring(word.length() - 2).equals("'s")) {
                         word = word.substring(0, word.length() - 2);
                         currentProbes = lookUpWord(word);
                     }
                     
                     //Third Rule 
                     wordCopy = word;
-                    if(currentProbes <= 0 && currentProbes <= 0 && word.substring(word.length() - 1).equals("s")) {
+                    if(currentProbes <= 0 && word.length() > 1 && word.substring(word.length() - 1).equals("s")) {
                         word = word.substring(0, (word.length() - 1));
                         currentProbes = lookUpWord(word);
                         if(currentProbes <= 0 && wordCopy.substring(wordCopy.length() - 2).equals("es")) {
@@ -172,7 +168,7 @@ public class Project4 {
                     
                     //Fourth Rule
                     wordCopy = word;
-                    if(currentProbes <= 0 && currentProbes <= 0 && word.substring(word.length() - 2).equals("ed")) {
+                    if(currentProbes <= 0 && word.length() > 2 && word.substring(word.length() - 2).equals("ed")) {
                         word = word.substring(0, (word.length() - 2));
                         currentProbes = lookUpWord(word);
                         if(currentProbes <= 0 && wordCopy.substring(wordCopy.length() - 1).equals("d")) {
@@ -183,7 +179,7 @@ public class Project4 {
                     
                     //Fifth Rule
                     wordCopy = word;
-                    if(currentProbes <= 0 && currentProbes <= 0 && word.substring(word.length() - 2).equals("er")) {
+                    if(currentProbes <= 0 && word.length() > 2 && word.substring(word.length() - 2).equals("er")) {
                         word = word.substring(0, (word.length() - 2));
                         currentProbes = lookUpWord(word);
                         if(currentProbes <= 0 && wordCopy.substring(wordCopy.length() - 1).equals("r")) {
@@ -194,7 +190,7 @@ public class Project4 {
                     
                     //Sixth Rule
                     wordCopy = word;
-                    if(currentProbes <= 0 && currentProbes <= 0 && word.substring(word.length() - 3).equals("ing")) {
+                    if(currentProbes <= 0 && word.length() > 3 && word.substring(word.length() - 3).equals("ing")) {
                         word = word.substring(0, (word.length() - 3));
                         currentProbes = lookUpWord(word);
                         if(currentProbes <= 0 && wordCopy.substring(wordCopy.length() - 3).equals("ing")) {
@@ -204,11 +200,11 @@ public class Project4 {
                     }
                     
                     //Seventh Rule
-                    if(currentProbes <= 0 && currentProbes <= 0 && word.substring(word.length() - 2).equals("ly")) {
+                    if(currentProbes <= 0 && word.length() > 2 && word.substring(word.length() - 2).equals("ly")) {
                         word = word.substring(0, (word.length() - 2));
                         currentProbes = lookUpWord(word);
                     }
-                    numLookUps++;
+                    
                     if(currentProbes <= 0 ) {
                         System.out.println("Misspelled Word: " + wordStore);
                     }
