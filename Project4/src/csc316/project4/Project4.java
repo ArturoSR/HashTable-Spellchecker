@@ -52,8 +52,11 @@ public class Project4 {
 //        outfile = outfile.trim();
         
         buildHashTable();
-//        System.out.println("HashCode Check: " + useHashFunction("ABC"));
-        
+        System.out.println("Yuki is " + hashTable.get(useHashFunction("Yuki")).toString());
+        System.out.println("yuh is " + hashTable.get(useHashFunction("yuh")).toString());
+        System.out.println("roadblock is " + hashTable.get(useHashFunction("roadblock")).toString());
+        System.out.println("don't is " + hashTable.get(useHashFunction("don't")).toString());
+        System.out.println("Contents of space 25 is" + hashTable.get(25).toString());
         
         console.close();
     }
@@ -73,12 +76,13 @@ public class Project4 {
                 hashTable.add(listInit);
             }
             
-            int totalCharsLength = 0;
+
             while(dictionaryScan.hasNext()) {
                 String currentWord = dictionaryScan.next();
                 int hash = useHashFunction(currentWord);
-                totalCharsLength += currentWord.length();
-                
+//                LinkedList hashingList = hashTable.get(hash);
+                hashTable.get(hash).add(currentWord);
+                            
                 //Use get to retrieve the linkedList at a position and store to temp
                 //Append new word to temp list and then use set to reinsert the temp list to the spot
                 dictionaryWords++;
@@ -104,7 +108,9 @@ public class Project4 {
         
 //        System.out.println("Uncompressed word Value: " + wordVal);
 //        System.out.println("Expected: " + (1073475 % 30181));
-        return (wordVal % sizeCapM);
+        
+        //Absolute value to avoid negative compressed hashvalues
+        return Math.abs((wordVal % sizeCapM));
     }
     
     
