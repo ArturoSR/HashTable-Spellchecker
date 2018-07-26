@@ -112,7 +112,7 @@ public class Project4 {
      * @return the integer hash code of the word passed in. 
      */
     public static int useHashFunction(String word) {
-        //Since each ascii character is typically 7 bits long
+        //Radix was smaller to avoid overflow. 
         int radix = 8;
         int wordVal = 0;
         for(int i = 0, j = (word.length() - 1); i < word.length(); i++, j--) {

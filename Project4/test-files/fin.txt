@@ -1,0 +1,33 @@
+Studies
+25
+000
+99
+program
+25
+144
+user’s
+flagged
+4
+program
+output
+alphabetical
+14
+15
+3
+program
+letter
+don’t
+program
+don’t
+you’d
+Baker’s
+flagged
+misspelled
+program
+
+Number of Words in Dictionary: 25144
+Number of words in file to be spell-checked: 320
+Total Misspelled Words: 26
+Total Probes: 499
+Probes Average: 1.559375
+Probes per Lookup: 1.4339080459770115
