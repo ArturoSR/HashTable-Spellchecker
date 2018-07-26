@@ -95,7 +95,7 @@ public class Project4 {
         System.out.println("Probes Average: " +  ((double)totalProbes / wordsInFile));
         System.out.println("Probes per Lookup: " +  ((double)totalProbes / numLookUps));
         
-        checkHash("ambitious");
+//        checkHash("ambitious");
         //checkHash("delicious");
         
         console.close();
@@ -182,11 +182,16 @@ public class Project4 {
                 checkLine = removePunctuation(checkLine);
                 Scanner lineScanner = new Scanner(checkLine);
                 while(lineScanner.hasNext()) {
+                    probesPerWord = 0;
                     wordsInFile++;
                     String wordStore = lineScanner.next();
                     String word = wordStore;
                     int currentProbes = lookUpWord(word);
-                    probesPerWord = currentProbes;
+                    if(currentProbes < 0) {
+                        probesPerWord = (currentProbes *  -1);
+                    } else {
+                        probesPerWord = currentProbes;
+                    }
                     
                     String wordCopy = word;
                     //First Rule
@@ -314,6 +319,7 @@ public class Project4 {
                         misspelled++;
                         System.out.println("Misspelled Word: " + wordStore);
                     }
+                    
                     
                     if(probesPerWord < 0) {
                         totalProbes += (probesPerWord * -1);
