@@ -1,0 +1,18 @@
+Misspelled Word: fictional
+Misspelled Word: grl
+Misspelled Word: Gd
+Misspelled Word: hapy
+Misspelled Word: actions
+Misspelled Word: dvil
+Misspelled Word: Homura
+Misspelled Word: Akemi
+Misspelled Word: Madoka
+Misspelled Word: Kaname
+Misspelled Word: 8
+
+Number of Words in Dictionary: 25144
+Number of words in file to be spell-checked: 63
+Total Misspelled Words: 11
+Total Probes: 107
+Probes Average: 1.6984126984126984
+Probes per Lookup: 1.5285714285714285

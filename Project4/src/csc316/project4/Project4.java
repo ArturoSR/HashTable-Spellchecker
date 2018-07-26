@@ -56,48 +56,23 @@ public class Project4 {
         System.out.println("What is the name of the file to spellcheck?");
         filename = console.nextLine();
         filename = filename.trim();
-//        System.out.println("What is the name of the file to print to?");
-//        outfile = console.nextLine();
-//        outfile = outfile.trim();
+        System.out.println("What is the name of the file to print to?");
+        outfile = console.nextLine();
+        outfile = outfile.trim();
         
         buildHashTable();
-        
-        System.out.println("The is " + hashTable.get(useHashFunction("The")).toString());
-        System.out.println("cook's is " + hashTable.get(useHashFunction("cook's")).toString());
-        System.out.println("cakes is " + hashTable.get(useHashFunction("cakes")).toString());
-        System.out.println("dishes is " + hashTable.get(useHashFunction("dishes")).toString());
-        System.out.println("cooked is " + hashTable.get(useHashFunction("cooked")).toString());
-        System.out.println("baked is " + hashTable.get(useHashFunction("baked")).toString());
-        System.out.println("cooker is " + hashTable.get(useHashFunction("cooker")).toString());
-        System.out.println("baker is " + hashTable.get(useHashFunction("baker")).toString());
-        System.out.println("cooking is " + hashTable.get(useHashFunction("cooking")).toString());
-        System.out.println("baking is " + hashTable.get(useHashFunction("baking")).toString());
-        System.out.println("deliciously is " + hashTable.get(useHashFunction("deliciously")).toString());
-        System.out.println("Bakers is " + hashTable.get(useHashFunction("Bakers")).toString());
-        System.out.println("Baker's is " + hashTable.get(useHashFunction("Baker's")).toString());
-        
-        
-        System.out.println("the is " + hashTable.get(useHashFunction("the")).toString());
-        System.out.println("cook is " + hashTable.get(useHashFunction("cook")).toString());
-        System.out.println("cake is " + hashTable.get(useHashFunction("cake")).toString());
-        System.out.println("dish is " + hashTable.get(useHashFunction("dish")).toString());
-        System.out.println("bake is " + hashTable.get(useHashFunction("bake")).toString());
-        System.out.println("delicious is " + hashTable.get(useHashFunction("delicious")).toString());
-//        System.out.println("delicious hashcode " + useHashFunction("delicious"));
+
         
         spellChecker();
         
-        System.out.println("Number of Words in Dictionary: " + dictionaryWords);
-        System.out.println("Number of words in file to be checked: " + wordsInFile);
-        System.out.println("Total Lookups: " + numLookUps);
-        System.out.println("Total Misspelled: " + misspelled);
-        System.out.println("Total Probes: " + totalProbes);
-        System.out.println("Probes Average: " +  ((double)totalProbes / wordsInFile));
-        System.out.println("Probes per Lookup: " +  ((double)totalProbes / numLookUps));
-        
-//        checkHash("ambitious");
-        //checkHash("delicious");
-        
+//        System.out.println("Number of Words in Dictionary: " + dictionaryWords);
+//        System.out.println("Number of words in file to be checked: " + wordsInFile);
+//        System.out.println("Total Lookups: " + numLookUps);
+//        System.out.println("Total Misspelled: " + misspelled);
+//        System.out.println("Total Probes: " + totalProbes);
+//        System.out.println("Probes Average: " +  ((double)totalProbes / wordsInFile));
+//        System.out.println("Probes per Lookup: " +  ((double)totalProbes / numLookUps));
+    
         console.close();
     }
     
@@ -122,6 +97,7 @@ public class Project4 {
                 hashTable.get(hash).add(currentWord);
                 dictionaryWords++;
             }
+            dictionaryScan.close();
         } catch (FileNotFoundException e) {
             System.out.println("The dictionary file was not found.");
         }
@@ -137,43 +113,28 @@ public class Project4 {
      */
     public static int useHashFunction(String word) {
         //Since each ascii character is typically 7 bits long
-        int radix = 128;
+        int radix = 8;
         int wordVal = 0;
         for(int i = 0, j = (word.length() - 1); i < word.length(); i++, j--) {
             int charVal = (int) word.charAt(i);
-//            System.out.println("current value of character is " + charVal);
-//            System.out.println("current value of exponent is " + j);
             wordVal += (int) (charVal * Math.pow(radix, j));
         }
           
-//        System.out.println("Uncompressed word Value: " + wordVal);
-//        System.out.println("Expected: " + (1073475 % 30181));
         
         //Absolute value to avoid negative compressed hash values
         return Math.abs((wordVal % sizeCapM));
     }
     
-    public static void checkHash(String word) {
-        int radix = 8;
-        int wordVal = 0;
-        for(int i = 0, j = (word.length() - 1); i < word.length(); i++, j--) {
-            int charVal = (int) word.charAt(i);
-//            System.out.println("current value of character is " + charVal);
-//            System.out.println("current value of exponent is " + j);
-            wordVal += (int) (charVal * Math.pow(radix, j));
-            System.out.println(wordVal);
-        }
-           
-    }
     
     
     /**
      * Method that checks to see if words are spelled correctly. 
+     * Also prints out the misspelled words to a file along with statistics on the spell-checking. 
      */
     public static void spellChecker() {
         try {
             Scanner checkFile = new Scanner(new FileInputStream(filename));
-            //PrintStream output = new PrintStream(new File(outfile));
+            PrintStream outputFile = new PrintStream(new File(outfile));
             wordsInFile = 0;
             numLookUps = 0;
             int probesPerWord = 0;
@@ -315,31 +276,40 @@ public class Project4 {
                         }
                     }
                     
+                    //Print out any misspelled words to file.
                     if(currentProbes <= 0 ) {
                         misspelled++;
-                        System.out.println("Misspelled Word: " + wordStore);
+                        outputFile.println(wordStore);
                     }
                     
-                    
+                    //Add the probes for this word to the total probes done in the run of this program. 
                     if(probesPerWord < 0) {
                         totalProbes += (probesPerWord * -1);
                     } else {
                         totalProbes += probesPerWord;
                     }
                 }
-                //it should count the number of probes in the hash
-                //table. For the purposes of counting, a probe occurs whenever a text word is compared to a word
-                //in the table. A probe does not occur when a text word is compared to an empty table entry.
-                
+                lineScanner.close();
             }
+            
+            outputFile.println();
+            outputFile.println("Number of Words in Dictionary: " + dictionaryWords);
+            outputFile.println("Number of words in file to be spell-checked: " + wordsInFile);
+            outputFile.println("Total Misspelled Words: " + misspelled);
+            outputFile.println("Total Probes: " + totalProbes);
+            outputFile.println("Probes Average: " +  ((double)totalProbes / wordsInFile));
+            outputFile.println("Probes per Lookup: " +  ((double)totalProbes / numLookUps));
+            
+            outputFile.close();
+            checkFile.close();    
         } catch (FileNotFoundException e) {
-            System.out.println("Error reading the input file to spellcheck.");
+            System.out.println("Error reading the input file to spellcheck or printing to output file");
         }
         
     }
     
     /**
-     * Method that looks in the hashTable to see if the word is present.
+     * Method that looks in the hashTable to see if the word is present. Each probe is equal to a comparison. 
      * 
      * @param word the word to lookup
      * @return the number of probes that it took to look up a word. 0 if the word was compared to an empty row.

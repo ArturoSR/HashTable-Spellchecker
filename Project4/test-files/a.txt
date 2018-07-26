@@ -1,0 +1,7 @@
+
+Number of Words in Dictionary: 25144
+Number of words in file to be spell-checked: 11
+Total Misspelled Words: 0
+Total Probes: 17
+Probes Average: 1.5454545454545454
+Probes per Lookup: 1.2142857142857142

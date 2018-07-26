@@ -1,0 +1,33 @@
+Misspelled Word: Studies
+Misspelled Word: 25
+Misspelled Word: 000
+Misspelled Word: 99
+Misspelled Word: program
+Misspelled Word: 25
+Misspelled Word: 144
+Misspelled Word: user’s
+Misspelled Word: flagged
+Misspelled Word: 4
+Misspelled Word: program
+Misspelled Word: output
+Misspelled Word: alphabetical
+Misspelled Word: 14
+Misspelled Word: 15
+Misspelled Word: 3
+Misspelled Word: program
+Misspelled Word: letter
+Misspelled Word: don’t
+Misspelled Word: program
+Misspelled Word: don’t
+Misspelled Word: you’d
+Misspelled Word: Baker’s
+Misspelled Word: flagged
+Misspelled Word: misspelled
+Misspelled Word: program
+
+Number of Words in Dictionary: 25144
+Number of words in file to be spell-checked: 320
+Total Misspelled Words: 26
+Total Probes: 499
+Probes Average: 1.559375
+Probes per Lookup: 1.4339080459770115
