@@ -1,0 +1,18 @@
+Studies have shown that the 25,000 most common English words account for more than 99% of all written text; indeed, this is true not just in English, but in other languages as well. You are to
+design a hash table for an English spelling checker. When the program is run, it will first read in a file of the 25,144 most common English words. These words will be entered into the hash table.
+Then, the user’s document will be read word by word. Each word will be searched for in the hash table, and flagged as a possible spelling error if it is not found.
+The word list of valid spellings is in the Project 4 folder.
+Your program must prompt the user for the name of the dictionary file containing the word list,
+the name of the text file to be spell checked, and the name of the output file.
+The dictionary contains words. Even though the list is already in alphabetical order, using
+binary search to find a word would be quite slow, requiring 14-15 probes on average. With a hash
+table you should be able to reduce this to fewer than 3.
+During the first phase, your program must read each word in the dictionary and store it in a hash
+table. Your hash table should be large enough to make searching fast, but not wastefully large.
+The size should also obey any constraints imposed by your collision resolution strategy.
+Finally, you should regard the apostrophe as a letter. Words like don’t should not be broken into
+two pieces in either phase of the program.
+These rules don’t sound too bad, but remember that you’d have to apply three different rules to
+reduce Bakers or Baker’s to the dictionary entry bake.
+This list of rules is certainly not complete. You should expect some correctly spelled words to be
+flagged as misspelled by your program.

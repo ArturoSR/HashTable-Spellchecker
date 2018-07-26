@@ -28,17 +28,17 @@ public class Project4 {
     private static ArrayList<LinkedList<String>> hashTable;
     /**Keeps count of the number of words in the dictionary*/
     private static int dictionaryWords;
-    /** Found by multiplying number of dictionary characters by 0.2, adding that to number of dictionary characters and then finding the 
+    /** Found by multiplying number of dictionary characters by 1.25, adding that to number of dictionary characters and then finding the 
      * the closest prime number. 
      */
-    private static final int sizeCapM = 30181; 
-    
+    private static final int sizeCapM = 31469; 
+    /** Total number of words in the file to spell check.*/
     private static int wordsInFile;
-    
+    /** Keeps track of the number of lookups done for words.*/
     private static int numLookUps;
-    
+    /**Keeps track of the number of misspelled words in the file */
     private static int misspelled;
-    
+    /** Total number of probes that were needed during spell checking. */
     private static int totalProbes;
     
     
@@ -61,12 +61,29 @@ public class Project4 {
 //        outfile = outfile.trim();
         
         buildHashTable();
-        System.out.println("Yuki is " + hashTable.get(useHashFunction("Yuki")).toString());
-        System.out.println("yuh is " + hashTable.get(useHashFunction("yuh")).toString());
-        System.out.println("Index of Braggart " + hashTable.get(useHashFunction("braggart")).indexOf("braggart"));
-        System.out.println("roadblock is " + hashTable.get(useHashFunction("roadblock")).toString());
-        System.out.println("don't is " + hashTable.get(useHashFunction("don't")).toString());
-        System.out.println("Contents of space 25 is" + hashTable.get(25).toString());
+        
+        System.out.println("The is " + hashTable.get(useHashFunction("The")).toString());
+        System.out.println("cook's is " + hashTable.get(useHashFunction("cook's")).toString());
+        System.out.println("cakes is " + hashTable.get(useHashFunction("cakes")).toString());
+        System.out.println("dishes is " + hashTable.get(useHashFunction("dishes")).toString());
+        System.out.println("cooked is " + hashTable.get(useHashFunction("cooked")).toString());
+        System.out.println("baked is " + hashTable.get(useHashFunction("baked")).toString());
+        System.out.println("cooker is " + hashTable.get(useHashFunction("cooker")).toString());
+        System.out.println("baker is " + hashTable.get(useHashFunction("baker")).toString());
+        System.out.println("cooking is " + hashTable.get(useHashFunction("cooking")).toString());
+        System.out.println("baking is " + hashTable.get(useHashFunction("baking")).toString());
+        System.out.println("deliciously is " + hashTable.get(useHashFunction("deliciously")).toString());
+        System.out.println("Bakers is " + hashTable.get(useHashFunction("Bakers")).toString());
+        System.out.println("Baker's is " + hashTable.get(useHashFunction("Baker's")).toString());
+        
+        
+        System.out.println("the is " + hashTable.get(useHashFunction("the")).toString());
+        System.out.println("cook is " + hashTable.get(useHashFunction("cook")).toString());
+        System.out.println("cake is " + hashTable.get(useHashFunction("cake")).toString());
+        System.out.println("dish is " + hashTable.get(useHashFunction("dish")).toString());
+        System.out.println("bake is " + hashTable.get(useHashFunction("bake")).toString());
+        System.out.println("delicious is " + hashTable.get(useHashFunction("delicious")).toString());
+//        System.out.println("delicious hashcode " + useHashFunction("delicious"));
         
         spellChecker();
         
@@ -75,9 +92,11 @@ public class Project4 {
         System.out.println("Total Lookups: " + numLookUps);
         System.out.println("Total Misspelled: " + misspelled);
         System.out.println("Total Probes: " + totalProbes);
-        System.out.println("Probes Average: " + (double) (totalProbes / wordsInFile));
-        System.out.println("Probes Average: " + (double) (totalProbes / wordsInFile));
-        System.out.println("Probes per Lookup: " + (double) (totalProbes / numLookUps));
+        System.out.println("Probes Average: " +  ((double)totalProbes / wordsInFile));
+        System.out.println("Probes per Lookup: " +  ((double)totalProbes / numLookUps));
+        
+        checkHash("ambitious");
+        //checkHash("delicious");
         
         console.close();
     }
@@ -126,13 +145,27 @@ public class Project4 {
 //            System.out.println("current value of exponent is " + j);
             wordVal += (int) (charVal * Math.pow(radix, j));
         }
-        
+          
 //        System.out.println("Uncompressed word Value: " + wordVal);
 //        System.out.println("Expected: " + (1073475 % 30181));
         
         //Absolute value to avoid negative compressed hash values
         return Math.abs((wordVal % sizeCapM));
     }
+    
+    public static void checkHash(String word) {
+        int radix = 8;
+        int wordVal = 0;
+        for(int i = 0, j = (word.length() - 1); i < word.length(); i++, j--) {
+            int charVal = (int) word.charAt(i);
+//            System.out.println("current value of character is " + charVal);
+//            System.out.println("current value of exponent is " + j);
+            wordVal += (int) (charVal * Math.pow(radix, j));
+            System.out.println(wordVal);
+        }
+           
+    }
+    
     
     /**
      * Method that checks to see if words are spelled correctly. 
@@ -281,7 +314,12 @@ public class Project4 {
                         misspelled++;
                         System.out.println("Misspelled Word: " + wordStore);
                     }
-                    totalProbes += probesPerWord;
+                    
+                    if(probesPerWord < 0) {
+                        totalProbes += (probesPerWord * -1);
+                    } else {
+                        totalProbes += probesPerWord;
+                    }
                 }
                 //it should count the number of probes in the hash
                 //table. For the purposes of counting, a probe occurs whenever a text word is compared to a word
