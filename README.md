@@ -7,4 +7,4 @@ Afterwards the program will prompt you for the file to spellcheck.
 <br>
 <br>
 
-The program will conduct a quick spellcheck by using a hashtable 
+The program will conduct a quick spellcheck by using a hashtable and present any misspelled words.
